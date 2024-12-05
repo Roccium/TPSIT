@@ -35,7 +35,7 @@ class Zcalc extends JFrame implements ActionListener {
         schermo.setEditable(false);
 
         // crea gli oggetti bottoni
-        JButton bottone0, bottone1, bottone2, bottone3, bottone4, bottone5, bottone6, bottone7, bottone8, bottone9, bottone_piu, bottones, bottoned, bottonem, bottonepunto, bottoneeq, bottoneeq1, bottonepotenza;
+        JButton bottone0, bottone1, bottone2, bottone3, bottone4, bottone5, bottone6, bottone7, bottone8, bottone9, bottone_piu, bottones, bottoned, bottonem, bottonepunto, bottoneeq, bottoneeq1, bottonepotenza,bottonerad;
 
         // crea i bottoni
         bottone0 = new JButton("0");
@@ -56,7 +56,10 @@ class Zcalc extends JFrame implements ActionListener {
         bottonepotenza = new JButton("^");
         bottoneeq = new JButton("C");
         bottonepunto = new JButton(".");
-
+        bottonerad = new JButton("v‾");
+        //provo a colorare
+        bottone0.setBackground(Color.blue);
+        bottone0.setForeground(Color.blue);
         // fai un pannello
         JPanel p = new JPanel();
 
@@ -79,6 +82,7 @@ class Zcalc extends JFrame implements ActionListener {
             bottoneeq.addActionListener(c);
             bottoneeq1.addActionListener(c);
             bottonepotenza.addActionListener(c);
+            bottonerad.addActionListener(c);
 
             // aggiungi la roba
             p.add(schermo);
@@ -91,6 +95,7 @@ class Zcalc extends JFrame implements ActionListener {
             p.add(bottone5);
             p.add(bottone6);
             p.add(bottonem);
+            p.add(bottonerad);
             p.add(bottone7);
             p.add(bottone8);
             p.add(bottone9);

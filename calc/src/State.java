@@ -39,6 +39,9 @@ public class State {
             case "^":
                 risultato = Math.pow((Double.parseDouble(operando0)), Double.parseDouble(operando2));
                 break;
+            case "v‾":
+                risultato = Math.sqrt((Double.parseDouble(operando0)));;
+                break;
             default:
                 risultato = (Double.parseDouble(operando0) * Double.parseDouble(operando2));
                 break;

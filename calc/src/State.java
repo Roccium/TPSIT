@@ -1,6 +1,7 @@
-import java.awt.event.ActionEvent;
+
 
 public class State {
+    boolean check=false;
     String operando0, operazione, operando2;
     State(){
         operando0=operando2=operazione="";
@@ -46,6 +47,7 @@ public class State {
                 risultato = (Double.parseDouble(operando0) * Double.parseDouble(operando2));
                 break;
         }
+        this.check=true;
         String finale=operando0 + operazione + operando2 + "=" + risultato;
 
         // lo metti come operando1
@@ -57,6 +59,13 @@ public class State {
         return finale;
     }
     public String operazione(String s){
+        if (this.check==true) {
+            if (operazione.equals("")) {
+                return "risultato non scivere";
+                
+            }
+        }
+        
         // se è il primo segno che metti
         if (operazione.equals("") || operando2.equals(""))
             operazione = s;
@@ -91,4 +100,5 @@ public class State {
         // scrivi
         return operando0 + operazione + operando2;
     }
+    
 }

@@ -13,7 +13,7 @@ public class State {
             this.operando0 = this.operando0 + s;
 
         // scrivi sul display
-        if (check&!s.equals(".")){
+        if (check&&!s.equals(".")&&operazione.equals(""){
             check=false;
             return "stai sovrascrivendo";
         }

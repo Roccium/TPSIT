@@ -1,13 +1,14 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
+public class Main extends Thread{
     public static void main(String[] args) {
-        int a[][]=new int[2][2];
-        player r = new player();
-        player p = new player();
+        Gioco partita = new Gioco();
+        player r = new player(partita.sem,partita.a,1);
+        player p = new player(partita.sem,partita.a,2);
         Thread T = new Thread(r);
         Thread Z = new Thread(p);
-        T.start();
-        Z.start();
+        T.run();
+        Z.run();
         }
+
     }

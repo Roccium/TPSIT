@@ -45,16 +45,16 @@ public class player implements Runnable {
                 finally {
                     s.release();
                     try {
-                        Thread.sleep(500);    
-                    } catch (InterruptedException e) {e.printStackTrace();
-                    
+                        Thread.sleep(100);    
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                     
                 }
             }  
             else{
                 if (checkvittoriaepareggio()==1) {
-                    System.out.println("hai vinto ");
+                    System.out.println("hai vinto il giocatare "+sign);
                     break;
                 }
                 else{

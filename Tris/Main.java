@@ -8,8 +8,8 @@ public class Main extends Thread{
         Thread Z = new Thread(p);
         Thread T = new Thread(r);
         
-        T.run();
-        Z.run();
+        T.start();
+        Z.start();
         }
 
     }

@@ -3,12 +3,13 @@
 public class Main extends Thread{
     public static void main(String[] args) {
         Gioco partita = new Gioco();
-        player r = new player(partita.sem,partita.a,1);
-        player p = new player(partita.sem,partita.a,2);
-        Thread T = new Thread(r);
+        player p = new player(partita.sem1,partita.sem2,partita.a,2);
+        player r = new player(partita.sem2,partita.sem1,partita.a,1);
         Thread Z = new Thread(p);
-        T.run();
-        Z.run();
-        }
+        Thread T = new Thread(r);
 
+        T.start();
+        Z.start();
     }
+
+}

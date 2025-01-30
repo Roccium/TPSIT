@@ -9,64 +9,41 @@ import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
-
-    private final int X = 30;
-    private final int Y = 30;
-    private final int WIDTH = 30;
-    private final int HEIGHT = 30;
+    int WIDTH=400;
+    int HEIGHT=400;
     private final int DELAY = 25;
-    private final int VEL = 1;
-
-    private int x, y;
-    private int vel_x, vel_y;
-
     private Thread animator;
-
+    circle uno =new circle(WIDTH, HEIGHT,30,30);
+    circle due =new circle(WIDTH, HEIGHT,90,70);
     public Board() {
         setBackground(Color.LIGHT_GRAY);
-        x = X;
-        y = Y;
-        vel_x = VEL;
-        vel_y = VEL;
         animator = new Thread(() -> task());
         animator.start();
+        uno.run();
+        due.run();
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(14));
         g2d.setColor(Color.black);
-        g2d.drawOval(x, y, WIDTH, HEIGHT);
+        g2d.drawOval(uno.getX(), uno.getY(), uno.getraggio(), uno.getraggio());
+        Graphics2D g2d2 = (Graphics2D) g;
+        g2d2.setStroke(new BasicStroke(14));
+        g2d2.setColor(Color.red  );
+        g2d2.drawOval(due.getX(), due.getY(), due.getraggio(), due.getraggio());
         // make animaton flkuid
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void loop() {
-        x += vel_x;
-        y += vel_y;
-        if (x + WIDTH > getWidth() || x < 0) {
-            vel_x = -vel_x;
-        }
-        if (y + HEIGHT > getHeight() || y < 0) {
-            vel_y = -vel_y;
-        }
-    }
-    private void loop2() {
-        x -= vel_x;
-        y -= vel_y;
-        if (x + WIDTH > getWidth() || x < 0) {
-            vel_x = -vel_x;
-        }
-        if (y + HEIGHT > getHeight() || y < 0) {
-            vel_y = -vel_y;
-        }
-    }
+  
+
 
     public void task() {
         while (true) {
-            loop();
+            uno.loop(due.getX(),due.getY());
+            due.loop(uno.getX(),uno.getY());
             repaint();
             try {
                 Thread.sleep(DELAY);
@@ -75,5 +52,6 @@ public class Board extends JPanel {
             }
         }
     }
+    
 
 }

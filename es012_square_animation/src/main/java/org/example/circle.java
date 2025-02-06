@@ -21,11 +21,11 @@ public class circle implements Runnable{
         this.x += this.vel_x;
         this.y += this.vel_y;
         
-        if (this.x + this.raggio > this.altezza || x <= 0) {
+        if (this.x + this.raggio > this.larghezza || x <= 0) {
             this.vel_x = this.vel_x*-1;
             
         }
-        if (this.y + this.raggio > this.larghezza || x <= 0) {
+        if (this.y + this.raggio > this.altezza || x <= 0) {
             this.vel_y = this.vel_y*-1;
         }
     

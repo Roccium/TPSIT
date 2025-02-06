@@ -3,24 +3,26 @@ package org.example;
 public class circle implements Runnable{
     private int altezza;
     private int larghezza;
-    public final int raggio = 30;
+    public final int raggio;
     private final int VEL = 3;
     public   int x=30;
     public   int y=30;
     private int vel_x=this.VEL;
     private int vel_y=this.VEL;
-    public circle(int ab,int ba,int xa,int ya){
+    public circle(int ab,int ba,int xa,int ya,int r){
         this.altezza=ab;
         this.x=xa;
         this.y=ya;
         this.larghezza=ba;
+        this.raggio =r;
     }
-    public void loop(int a,int b) {
+    public void loop(int a,int b,int c) {
         int other_x=a;
         int other_y=b;
+        int other_raggio=c;
         this.x += this.vel_x;
         this.y += this.vel_y;
-        if (Math.sqrt(Math.pow(Math.abs(this.x-other_x),2)+ Math.pow(Math.abs(this.y-other_y),2))<(this.raggio*1.5)){
+        if (Math.sqrt(Math.pow(Math.abs(this.x-other_x),2)+ Math.pow(Math.abs(this.y-other_y),2))<(this.raggio+other_raggio-5)){
             this. vel_y = this.vel_y*-1;
             this. vel_x = this.vel_x*-1;
             System.out.println("a");
@@ -29,17 +31,21 @@ public class circle implements Runnable{
         
         if (this.x + this.raggio > this.larghezza) {
             this.vel_x = this.vel_x*-1;
+            this.x=this.x-1;
             //this.x=this.larghezza-this.raggio;
         }
         if ( this.x <= 0) {
             this.vel_x = this.vel_x*-1;
+            this.x=this.x+1;
            // this.x=this.raggio;
         }
         if (this.y + this.raggio > this.altezza ) {
             this.vel_y = this.vel_y*-1;
+            this.y=this.y-1;
             //this.y=this.altezza-this.raggio;
         }
         if (this.y <= 0) {
+            this.y=this.y+1;
             this.vel_y = this.vel_y*-1;
             //this.y=this.raggio;
         }

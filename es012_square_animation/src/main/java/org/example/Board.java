@@ -13,14 +13,15 @@ public class Board extends JPanel {
     int HEIGHT=400;
     private final int DELAY = 25;
     private Thread animator;
-    circle uno =new circle(WIDTH, HEIGHT,30,30);
-    circle due =new circle(WIDTH, HEIGHT,90,70);
+    circle uno =new circle(WIDTH, HEIGHT,110,140,30);
+    circle due =new circle(WIDTH, HEIGHT,30,40,30);
     public Board() {
         setBackground(Color.LIGHT_GRAY);
         animator = new Thread(() -> task());
         animator.start();
         uno.run();
         due.run();
+       
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -33,17 +34,19 @@ public class Board extends JPanel {
         g2d2.setStroke(new BasicStroke(14));
         g2d2.setColor(Color.red  );
         g2d2.drawOval(due.getX(), due.getY(), due.getraggio(), due.getraggio());
+        
         // make animaton flkuid
         Toolkit.getDefaultToolkit().sync();
     }
 
-  
+
 
 
     public void task() {
         while (true) {
-            uno.loop(due.getX(),due.getY());
-            due.loop(uno.getX(),uno.getY());
+            uno.loop(due.getX(),due.getY(),due.getraggio());
+            due.loop(uno.getX(),uno.getY(),uno.getraggio());
+            
             repaint();
             try {
                 Thread.sleep(DELAY);
@@ -52,6 +55,6 @@ public class Board extends JPanel {
             }
         }
     }
-    
+
 
 }

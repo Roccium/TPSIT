@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MaterialApp(home: MyHomePage()));
@@ -20,8 +21,15 @@ class _MyHomePageState extends State<MyHomePage> {
   bool paused = false;
   int millisecondi = 0;
   bool cliccabile = false;
+  var corsa = [];
+  bool girabile = true;
+  int giri = 0;
+  int lastgiro = 0;
+  int indxgiro = 0;
+  List<MaterialColor> colorgiro = [Colors.grey, Colors.red, Colors.green];
+
   var button1 = [
-    "start",
+    "start ▶️",
     "stop",
     "reset",
   ];
@@ -34,9 +42,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
     pipe = ticker.stream.listen((value) {
       if (!paused) {
-        orologio.add(value); // Passa il dato solo se non in pausa
+        orologio.sink.add(value); // Passa il dato solo se non in pausa
       }
     });
     ticker.add(0);
@@ -47,8 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!running) {
       setState(() {
         running = true;
+        girabile = true;
       });
       tick = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+        giri++;
+
         millisecondi++;
         ticker.sink.add(millisecondi);
       });
@@ -78,6 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     setState(() {
       millisecondi = 0;
+      giri = 0;
+      lastgiro = 0;
+      corsa.clear();
     });
     ticker.sink.add(0);
 
@@ -90,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void pauseorologio() {
     if (!paused) {
       setState(() {
+        girabile = false;
         paused = true;
       });
       stopticker();
@@ -101,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (state1 == 1) {
       if (paused) {
         setState(() {
+          girabile = true;
           paused = false;
         });
         startticker();
@@ -110,6 +127,18 @@ class _MyHomePageState extends State<MyHomePage> {
         state2 = 1;
       });
     }
+  }
+
+  int calcolagiro() {
+    if (corsa.isNotEmpty) {
+      if ((corsa.last == lastgiro)) {
+        return 1;
+      }
+      if (corsa.first == lastgiro) {
+        return 2;
+      }
+    }
+    return 0;
   }
 
   //check
@@ -141,7 +170,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  //PULISCI
   @override
   void dispose() {
     tick?.cancel();
@@ -188,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             final int secondi = (time ~/ 10) % 60;
                             final int milli = time % 10;
                             return Text(
-                              '${minuti.toString().padLeft(2, '0')}:${secondi.toString().padLeft(2, '0')}:${milli.toString()}',
+                              '${minuti.toString().padLeft(2, '0')}:${secondi.toString().padLeft(2, '0')}:${milli.toString()}0',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 65,
@@ -200,14 +228,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           }
                         }))),
             Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(
+                  verticalDirection: VerticalDirection.up,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                         margin: const EdgeInsets.only(
-                          bottom: 100.0,
+                          bottom: 10.0,
                           top: 0,
                           right: 15,
                           left: 15,
@@ -222,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   animationDuration: Duration.zero,
                                   backgroundColor: Colors.amber,
                                   overlayColor: (Colors.transparent),
-                                  fixedSize: const Size(150, 100)),
+                                  fixedSize: const Size(150, 90)),
                               child: Text(
                                 button1[state1],
                                 style: TextStyle(fontSize: 20),
@@ -230,7 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         )),
                     Container(
                         margin: const EdgeInsets.only(
-                          bottom: 100.0,
+                          bottom: 10.0,
                           top: 0,
                           right: 15,
                           left: 15,
@@ -247,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   animationDuration: Duration.zero,
                                   backgroundColor: Colors.amber,
                                   overlayColor: (Colors.transparent),
-                                  fixedSize: const Size(150, 100)),
+                                  fixedSize: const Size(150, 90)),
                               child: Text(
                                 button2[state2],
                                 style: TextStyle(fontSize: 20),
@@ -255,6 +283,112 @@ class _MyHomePageState extends State<MyHomePage> {
                         )),
                   ],
                 ),
+                Container(
+                    margin: const EdgeInsets.only(
+                      bottom: 10.0,
+                      top: 0,
+                      right: 15,
+                      left: 15,
+                    ),
+                    child: RepaintBoundary(
+                      child: ElevatedButton(
+                          onPressed: (cliccabile && girabile)
+                              ? () => setState(() {
+                                    corsa.add(giri);
+                                    corsa.sort();
+                                    lastgiro = giri;
+                                    giri = 0;
+                                    indxgiro = calcolagiro();
+                                  })
+                              : null,
+                          style: FilledButton.styleFrom(
+                              animationDuration: Duration.zero,
+                              backgroundColor: Colors.amber,
+                              overlayColor: (Colors.transparent),
+                              fixedSize: const Size(100, 60)),
+                          child: Text(
+                            "giro",
+                            style: TextStyle(fontSize: 20),
+                          )),
+                    )),
+                Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                        bottom: 10.0,
+                        top: 0,
+                        right: 15,
+                        left: 15,
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: colorgiro[indxgiro],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "+ ${corsa.isEmpty ? 0.00 : (lastgiro / 10)} Secondi",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                            bottom: 10.0,
+                            top: 0,
+                            right: 0,
+                            left: 15,
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            "Miglior tempo : ${corsa.isEmpty ? 0.00 : (corsa.first / 10)}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                            bottom: 10.0,
+                            top: 0,
+                            right: 15,
+                            left: 0,
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            "Pegggior tempo : ${corsa.isEmpty ? 0.00 : (corsa.last / 10)}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
               ],
             ),
           ],

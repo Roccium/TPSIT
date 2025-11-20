@@ -1,0 +1,22 @@
+import 'dart:core';
+import 'dart:async';
+import 'dart:io';
+
+void startServer() {
+  var hub=<ServerSocket>[];
+  Future<ServerSocket> serverFuture = ServerSocket.bind('0.0.0.0', 55555);
+  serverFuture.then((ServerSocket server) {
+    hub.add(server);
+    server.listen((Socket socket) {
+      socket.listen((List<int> data) {
+        socket.write(data);
+        String result = new String.fromCharCodes(data);
+        print(result.substring(0, result.length - 1));
+      });
+    });
+  });
+}
+
+void main() {
+  startServer();
+}

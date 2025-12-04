@@ -213,30 +213,7 @@ List<int> statoMano(List<String> mG){
       return [5, cartaPiuAlta];
     }
   }
-      /*if (doppioni.length==1) {
-      for (var element in doppioni.keys) {
-        switch (doppioni[element]) {
-          case 2:
-            return [5,element];
-          case 3:
-            return[15,element];
-          case 4:
-            return [40,element];
-          default:
-        }
-      }
-      }
-      if (doppioni.length==2) {
-        for (var element in doppioni.keys) {
-          if (doppioni[element]==3) {
-            return [20,element];
-          }
-          if (doppioni[element]==2) {
-            return[10,element];
-          }
-        }
-        
-      }*/
+      
   }
   
   return [0,valore.last];

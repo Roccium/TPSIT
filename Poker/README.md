@@ -1,9 +1,19 @@
 
 Poker:
  il gioco poker in dart si compone di due elementi :
- # server
-    
-    dove risiede il gamestate
+ # server[void startGame() {
+  
+  for (int i = 1; i <= 13; i++) {
+    for (int j = 0; j < 4; j++) {
+      Carte c = Carte(semi.elementAt(j), i, (j > 1));
+      mazzo.add(c);
+    }
+  }
+  for (Giocatore c in partita) {
+    c.write(dealHand(5));
+  }
+}]
+ dove risiede il gamestate
     e la logica,
     dove con I ServerSocket si crea la stanza con le classi Giocatori.
     Si inizia con la fase di aspetto dei giocatori, i quali quando arrviano a due innescano il gioco,

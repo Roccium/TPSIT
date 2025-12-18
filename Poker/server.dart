@@ -5,9 +5,10 @@ import 'dart:math';
 ServerSocket? server;
 List<Giocatore> partita = [];
 List<Carte> mazzo = [];
-List<String> semi = ['♦','♠', '♥', '♣'];
+
+List<String> semi = ['d','c', 'p', 'f'];
+//List<String> semi = ['♦','♠', '♥', '♣'];
 Random random = Random();
-int stage = 0;
 
 class Carte {
   int numero;
@@ -33,21 +34,25 @@ class Giocatore {
       }
 
           void messageHandler(dynamic data) {
-            //switch che prende da stage
             String message = String.fromCharCodes(data as List<int>).trim();
-            if(stage<=3){
-            _socket.write(dealHand(int.parse(message)));
-              stage++;
+            List<String>keyvalue=message.split(':');
+
+            if(keyvalue.elementAt(0)=="cambio"){
+              int numerocarte = int.parse(keyvalue.elementAt(1));
+                _socket.write(dealHand((numerocarte)));
             }
-            else{
-              final veduta = message.split(";");
-                veduta.removeWhere((element) => element.isEmpty); // Rimuovi elementi vuoti
+            else if(keyvalue.elementAt(0)=="controlla"){
+              print("ricevuto_p_finale");
+              var veduta = keyvalue.elementAt(1).split(";");
+                veduta.removeWhere((element) => element.isEmpty); 
                 mano = veduta;
               valoremano=statoMano(mano);
               checkWin();
             }
+            else{
+              _socket.write("sbagliato formato");
             }
-
+            }
                       void errorHandler(error) {
                         print('${_address}:${_port} Error: $error');
                         removeClient(this);
@@ -67,20 +72,15 @@ class Giocatore {
 
 
 void startGame() {
-  for (Giocatore c in partita) {
-    c.write("start\n");
-  }
-  // Crea il mazzo
+  
   for (int i = 1; i <= 13; i++) {
     for (int j = 0; j < 4; j++) {
       Carte c = Carte(semi.elementAt(j), i, (j > 1));
       mazzo.add(c);
     }
   }
-  // Distribuisci le carte
   for (Giocatore c in partita) {
     c.write(dealHand(5));
-    stage++;
   }
 }
 
@@ -89,7 +89,6 @@ String dealHand(int n) {
   for (int k = 0; k < n; k++) {
     int s = random.nextInt(mazzo.length);
     Carte carta = mazzo.elementAt(s);
-    //deal.add('${carta.numero},${carta.seme},${carta.colore}');
     deal = deal + '${carta.numero},${carta.seme},${carta.colore};';
     mazzo.removeAt(s);
   }
@@ -109,6 +108,7 @@ void checkWin(){
   int highcard1 = partita.elementAt(0).valoremano.elementAt(1);
   int carte2=partita.elementAt(1).valoremano.elementAt(0);
   int highcard2 = partita.elementAt(1).valoremano.elementAt(1);
+  print(carte2,carte1);
   if (carte1==carte2) {
     if (highcard1>highcard2) {
       socket1.write("v");
@@ -137,6 +137,7 @@ void checkWin(){
 
 
 List<int> statoMano(List<String> mG){
+  print(mG);
   List<int> valore = [];
   List<Carte> m = [];
 
@@ -248,11 +249,3 @@ void main() {
 }
 
 
-//ascoltare sulla porta 4567
-//quando entra il secondo giocatore iniziare il gioco
-//  -mandare un messaggio che il gioco è iniziato
-//  -mandare cinque carte randomiche diverse a ciascuno
-//  -aspettare che carte vogliono cambiare
-//  -ridargli delle carte
-//  -controllare chi ha vinto
-//  -mandare il messaggio al vincitore/perdente

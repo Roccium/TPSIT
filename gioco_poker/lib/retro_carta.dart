@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class RetroCard extends StatefulWidget {
-  
   @override
   _cardState createState() => _cardState();
 }

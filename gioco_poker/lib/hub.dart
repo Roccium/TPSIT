@@ -6,6 +6,7 @@ import 'package:gioco_poker/homepage.dart';
 
 class Hub extends StatelessWidget {
   Future<void> _connetti(String ip, BuildContext context) async {
+    print("TEST");
   try {
       Socket socket = await Socket.connect(ip, 4567);
       if (context.mounted) { 

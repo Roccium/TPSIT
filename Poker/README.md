@@ -13,31 +13,13 @@
   for (Giocatore c in partita) {
     c.write(dealHand(5));
   }
-}] }
+}]
+}
 ```
- <p>
-  void startGame() {
-  for (int i = 1; i <= 13; i++) {
-    for (int j = 0; j < 4; j++) {
-      Carte c = Carte(semi.elementAt(j), i, (j > 1));
-      mazzo.add(c);
-    }
-  }
-  for (Giocatore c in partita) {
-    c.write(dealHand(5));
-  }
-}] }
-</p>
- 
- dove risiede il gamestate
-    e la logica,
-    dove con I ServerSocket si crea la stanza con le classi Giocatori.
-    Si inizia con la fase di aspetto dei giocatori, i quali quando arrviano a due innescano il gioco,
-    per prima cosa si crea il mazzo per poi distribuire 5 carte a testa.
-    Le carte sono rappresentate da una stringa val1,val2,val3;val1carta2,val2carta2 ... sara poi il compito del client splittarli.
-    dentro il server c'è anche la logica per controllare quale mano è vincente tra quelle mandate, uso un sistema di punteggi: quando
-    un giocare manda la sua mano finale la analizzo e gli do un punteggio da 5 a 100, e quando sono arrivate entrambe comparo i punteggi
-    e vedo chi ha vinto
+ Dove risiede il gamestate e la logica:utilizzo i ServerSocket aspettando una connessione sulla porta 4567 e crea la istanza con le classi Giocatori.
+Per prima cosa si crea il mazzo di 52 carte per poi distribuirne 5 a testa.
+Le carte sono rappresentate da una stringa val1carta1,val2carta1,val3carta1;val1carta2,val2carta2 ... sara poi il compito del client splittarli.
+dentro il server c'è anche la logica per controllare quale mano è vincente tra quelle mandate, uso un sistema di punteggi: quando un giocare manda la sua mano finale la analizzo e gli do un punteggio da 5 a 100, e quando sono arrivate entrambe comparo i punteggi e vedo chi ha vinto, ai quali mando messaggi del tipo "v" o "p" o "d" per vittoria,perdita e draw
    
   # client
     _il Client{

@@ -1,48 +1,71 @@
-# am032_todo_list
+# 📋 am043 Todo List
 
-**vr.251223**
+> Un'applicazione Flutter moderna e intuitiva per la gestione organizzata di task attraverso contenitori personalizzabili.
 
-In questa nuova versione abbiamo introdotto il *provider* - rimandiamo agli esempi - in modo da proporre
-una più organizzata *business logic*. La vecchia versione si trova nella cartella `old`.
+![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)
+![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?logo=dart)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## gestioni dell notifiche
+---
 
-La classe `TodoListNotifier`
+## 📖 Indice
 
-## model
+- [Panoramica](#-panoramica)
+- [Caratteristiche](#-caratteristiche)
+- [Architettura](#-architettura)
+- [Installazione](#-installazione)
+- [Utilizzo](#-utilizzo)
+- [Struttura del Progetto](#-struttura-del-progetto)
+- [Scelte Progettuali](#-scelte-progettuali)
+- [Miglioramenti Implementati](#-miglioramenti-implementati)
+- [Sviluppi Futuri](#-sviluppi-futuri)
+- [Tecnologie Utilizzate](#-tecnologie-utilizzate)
+- [Contribuire](#-contribuire)
+- [Licenza](#-licenza)
 
-La classe 
-```dart
-class Todo {
-  Todo({required this.name, required this.checked});
-  final String name;
-  bool checked;
-}
-```
-definisce il *model* per gli *item* della lista.
+---
 
-## dialog
+## 🎯 Panoramica
 
-Il metodo `showDialog<T>` in [2] ci ha permesso di creare il nostro *dialog*
-```dart
-barrierDismissible: false,
-```
-sta ad indicare [2] che il *dialog* resta visibile anche se tocchiamo fuori da esso. La classe `AlertDialog` [è la classe *basic* per i *dialog* in *Material Design*, invitiamo alla lettura delle API in [1]. L'istruzione
-```dart
-Navigator.pop(context);
-```
-l'abbiamo vista all'opera col *router*.
+**am043 Todo List** è un'applicazione di gestione task che permette di organizzare le proprie attività in **contenitori tematici**. Ogni contenitore può contenere una lista di todo indipendente, con un sistema di colori casuali per una facile identificazione visiva.
 
-## la lista e i suoi elementi
+L'applicazione è stata progettata con particolare attenzione a:
+- **Usabilità**: interfaccia intuitiva e gesti naturali
+- **Scalabilità**: architettura pulita e manutenibile
+- **Responsività**: adattamento dinamico del layout al contenuto
 
-`ListView.builder(..)` è *named constructor* che permette di costruire la lista. Legare a *widget* di uno stesso tipo valori di `key` differenti è importante, qui scegliamo
-```dart
-: super(key: ObjectKey(todo));
-```
+---
+
+## ✨ Caratteristiche
+
+### Funzionalità Principali
+
+#### 🗂️ Gestione Contenitori
+- ✅ **Creazione rapida** tramite Floating Action Button
+- ✅ **Colori distintivi** assegnati automaticamente
+- ✅ **Ridenominazione** tramite long press
+- ✅ **Eliminazione sicura** con dialog di conferma
+- ✅ **Layout a griglia** responsivo a 2 colonne
+
+#### ✔️ Gestione Todo
+- ✅ **Aggiunta veloce** cliccando sul contenitore
+- ✅ **Completamento** con checkbox interattiva
+- ✅ **Strike-through visivo** per task completati
+- ✅ **Eliminazione immediata** con icona dedicata
+- ✅ **Contatore progresso** (es. "3/5 completati")
+
+#### 🎨 UI/UX
+- ✅ **Material Design 3** con tema personalizzato
+- ✅ **Altezza dinamica** dei contenitori (no overflow)
+- ✅ **Feedback visivo** su tutte le interazioni
+- ✅ **Empty state** descrittivo quando non ci sono contenitori
+- ✅ **Badge** con statistiche di completamento
+
+---
+<div align="center">
 
 
-## materiali
 
-[1] `AlertDialog` [qui](https://api.flutter.dev/flutter/material/AlertDialog-class.html).  
-[2] `showDialog<T>` [qui](https://api.flutter.dev/flutter/material/showDialog.html).   
-[3] `ListView` [qui](https://api.flutter.dev/flutter/widgets/ListView-class.html).  
+[⬆ Torna su](#-am043-todo-list)
+
+</div>

@@ -108,7 +108,6 @@ void checkWin(){
   int highcard1 = partita.elementAt(0).valoremano.elementAt(1);
   int carte2=partita.elementAt(1).valoremano.elementAt(0);
   int highcard2 = partita.elementAt(1).valoremano.elementAt(1);
-  print(carte2,carte1);
   if (carte1==carte2) {
     if (highcard1>highcard2) {
       socket1.write("v");

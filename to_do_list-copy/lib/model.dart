@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
+import 'Databasecontroller.dart';
 class Todo {
   Todo({required this.name, required this.checked});
   final String name;
@@ -9,11 +9,12 @@ class Todo {
 
 class Contenitore {
   Contenitore({
+    required this.id,
     required this.argomento,
     required this.colore,
     List<Todo>? todos,
   }) : todos = todos ?? [];
-
+  final int id;
   final String argomento;
   final Color colore;
   final List<Todo> todos;

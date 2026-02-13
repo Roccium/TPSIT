@@ -31,6 +31,7 @@ class TodoListNotifier with ChangeNotifier {
 
   void changeTodo(Todo todo) {
     todo.checked = !todo.checked;
+    _database.modifytask(todo);
     notifyListeners();
   }
 

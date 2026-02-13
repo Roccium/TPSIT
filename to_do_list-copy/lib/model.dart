@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'Databasecontroller.dart';
 class Todo {
+  int ?id;
   Todo({required this.name, required this.checked});
   final String name;
   bool checked;
+  
 }
 
 class Contenitore {

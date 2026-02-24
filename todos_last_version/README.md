@@ -1,4 +1,4 @@
-## integrazione sqlite e refactor generale del progetto
+## integrazione sqlite e generale del progetto
 
 aggiunta persistenza dei dati tramite sqflite, implementati container
 per raggruppare i todo, e esteso il notifier per gestire il caricamento

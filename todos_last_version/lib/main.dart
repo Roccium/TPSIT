@@ -6,9 +6,9 @@ import 'notifier.dart';
 import 'widgets.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
   //await deleteDatabase(); 
-  //runApp(const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

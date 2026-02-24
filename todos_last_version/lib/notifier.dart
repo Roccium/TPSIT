@@ -11,28 +11,38 @@ class TodoListNotifier with ChangeNotifier {
 //funzione con query di darabasecontroller che crea una mappa di todos con una select * e aggiunge containter e todos
   void firstQuery()async{
     List<Map<String, dynamic>> result= await _database.getAll();
-    var idC =addContenitore();
+    
     int highC = 0;
-    /*
     for (var i = 0; i < result.length; i++) {
       if (highC < (result[i]["containerdiappartenenza"] as int)) {
         highC = (result[i]["containerdiappartenenza"] as int);
         print(highC);
       }
-    }*/
-    print(idC);
-    print("aAAAAAAAAAAAAAAA");
-    for (var element in result) {
-      addTodoToContenitore(_container[idC-1],element["contenuto"] as String,(element["statuschecked"] == 0)? false:true);
-      //Todo t = Todo(name: element["contenuto"], checked: (element["statuschecked"] == 0)? false:true, contid: _container[idC-1].id);
-      //_container[idC-1].todos.add(t);
-      //notifyListeners();
+    }
+    for (var i = 0; i <= highC; i++) {
+      var idC =addContenitore();
+      for (var element in result) {
+        
+        if (element["containerdiappartenenza"] as int == i) {
+          print("idcontainer $element['containerdiappartenenza'] " );
+        print("$i ciclo");
+          //addTodoToContenitore(_container[idC-1],element["contenuto"] as String,(element["statuschecked"] == 0)? false:true);
+      Todo t = Todo(id:element["id"],name: element["contenuto"], checked: (element["statuschecked"] == 0)? false:true, contid: _container[idC-1].id);
+      _container[idC-1].todos.add(t);
+      notifyListeners();
+        }
+
+    }
     }
   }
+
+
   int calcid(int i){
     identifiar = identifiar+1;
     return i++;
   }
+
+
   int addContenitore() {
     
     _container.add(
@@ -42,7 +52,6 @@ class TodoListNotifier with ChangeNotifier {
         colore: randomColor(),
       ),
     );
-    print(identifiar);
     notifyListeners();
     return identifiar;
   }
@@ -56,12 +65,14 @@ class TodoListNotifier with ChangeNotifier {
   
   void changeTodo(Todo todo) {
     todo.checked = !todo.checked;
+    print(todo.id);
     _database.modifytask(todo);
     notifyListeners();
   }
 
   void deleteTodo(Contenitore contenitore, Todo todo) {
     contenitore.todos.remove(todo);
+    _database.deleteTask(todo);
     notifyListeners();
   }
 

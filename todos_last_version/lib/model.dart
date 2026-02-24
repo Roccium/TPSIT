@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 class Todo {
   int ?id;
-  Todo({required this.name, required this.checked,required this.contid});
+  Todo({required this.name, required this.checked,required this.contid, this.id});
   final String name;
   bool checked;
-  final int contid;
+  final int ?contid;
 }
 
 class Contenitore {

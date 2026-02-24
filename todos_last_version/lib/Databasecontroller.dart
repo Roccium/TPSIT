@@ -46,27 +46,36 @@ class Databasecontroller {
 
   void modifytask(Todo todoxupdate) async{
     final db = await database();
-     Map<String, Object?> row = {
-      contenuto  : todoxupdate.name,
-      statuschecked : ((todoxupdate.checked==false) ? 0 : 1),
-      containerdiappartenenza : todoxupdate
-    };
+     
+    var check =(todoxupdate.checked == false) ? "0" : "1";
+      
     await db.update(
     todo, 
-    row,
-    where: '${id} = ?',
+    {statuschecked: check},
+    where: '$id = ?',
     whereArgs: [todoxupdate.id],
     );
+    print("check_stasus AAAAAAAAAAAAAAAAA");
+    print(todoxupdate.id);
   }
-  void addTask(Todo tododaaggiugnere,) async{
+
+  void addTask(Todo todoDaAggiugnere,) async{
       final db = await database();
-      tododaaggiugnere.id = await db.insert(todo, 
+      todoDaAggiugnere.id = await db.insert(todo, 
       { 
-      contenuto:tododaaggiugnere.name,
+      contenuto:todoDaAggiugnere.name,
       statuschecked:0,
-      containerdiappartenenza:tododaaggiugnere.contid
+      containerdiappartenenza:todoDaAggiugnere.contid
       }
         );
+  }
+
+  void deleteTask(Todo todoDaCancellare) async{
+    final db = await database();
+    await  db.delete( todo,
+    where: '$id = ?',
+    whereArgs: [todoDaCancellare.id],
+    );
   }
 
 }

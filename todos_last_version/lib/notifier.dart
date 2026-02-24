@@ -8,7 +8,6 @@ class TodoListNotifier with ChangeNotifier {
   int get length_c => _container.length;
 
 
-//funzione con query di darabasecontroller che crea una mappa di todos con una select * e aggiunge containter e todos
   void firstQuery()async{
     List<Map<String, dynamic>> result= await _database.getAll();
     
@@ -24,10 +23,7 @@ class TodoListNotifier with ChangeNotifier {
       for (var element in result) {
         
         if (element["containerdiappartenenza"] as int == i) {
-          print("idcontainer $element['containerdiappartenenza'] " );
-        print("$i ciclo");
-          //addTodoToContenitore(_container[idC-1],element["contenuto"] as String,(element["statuschecked"] == 0)? false:true);
-      Todo t = Todo(id:element["id"],name: element["contenuto"], checked: (element["statuschecked"] == 0)? false:true, contid: _container[idC-1].id);
+        Todo t = Todo(id:element["id"],name: element["contenuto"], checked: (element["statuschecked"] == 0)? false:true, contid: _container[idC-1].id);
       _container[idC-1].todos.add(t);
       notifyListeners();
         }

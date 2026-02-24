@@ -79,7 +79,6 @@ bool firsttimecheck = true;
 
       firsttimecheck = false;
     }
-    //funzione con bool che dice che se hai chiamato il carica todo che c'e su notifiar
     return Scaffold(
       appBar: AppBar(
         shadowColor: Theme.of(context).shadowColor,

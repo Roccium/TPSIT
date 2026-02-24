@@ -40,7 +40,7 @@ class Databasecontroller {
   Future<List<Map<String, dynamic>>> getAll() async {
   final db = await database(); 
   final List<Map<String, dynamic>> result = await db.query(todo);
-  print(result);
+ 
   return result;
 }
 
@@ -55,8 +55,7 @@ class Databasecontroller {
     where: '$id = ?',
     whereArgs: [todoxupdate.id],
     );
-    print("check_stasus AAAAAAAAAAAAAAAAA");
-    print(todoxupdate.id);
+    
   }
 
   void addTask(Todo todoDaAggiugnere,) async{

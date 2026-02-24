@@ -1,16 +1,18 @@
 # todos_last_version
 
-A new Flutter project.
+progetto basato sul todo dato dal prof, integrazione di sqllite come database per salvare i dati in locale
 
-## Getting Started
+## Introduzione 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Ho lavorato sulla consegna e con la base dataci dal prof morettin del am032_todo_list da cui ho aggiunto parti a discrezione persponale.
+Uno dei punti chiave di questa consegna è stata l'implementazione del database attraverso sqllite per gestire il salvataggio dei dati inseriti dall utente, alcuni comandi come quello di creazione del database sono linea di sql dirette mentre le operazioni sul db sono state fatte attraverso i mezzi dati dalla libreria.
+ ```sh
+db.execute('''
+          CREATE TABLE todo(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          contenuto TEXT NOT NULL,
+          statuschecked INTEGER NOT NULL,
+          containerdiappartenenza INTEGER NOT NULL
+          )
+          ''');
+```

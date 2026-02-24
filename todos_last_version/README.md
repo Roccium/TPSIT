@@ -16,3 +16,24 @@ db.execute('''
           )
           ''');
 ```
+ ```sh
+  void modifytask(Todo todoxupdate) async{
+    final db = await database();
+     
+    var check =(todoxupdate.checked == false) ? "0" : "1";
+      
+    await db.update(
+    todo, 
+    {statuschecked: check},
+    where: '$id = ?',
+    whereArgs: [todoxupdate.id],
+    );
+    
+  }
+```
+
+## classi
+
+per gestire lo stato del programma ho usato la classe notifiar provveduta dal prof con pesanti modifiche ora gestisce anche la prima queery del programma e l'inserimento dei todo dentro gli appositi container, propio su questo ho aggiunto la classe conteiner per tenere traccia di dove i todo dovevano essere inseriti rispetto allo spazio circostante, i contenitori sono distinti dai todo quindi se ne possono creare quanti se ne vogliano senza creare nessun todo,ma visto che solo i todo vengono salvati sul database tutti i conteiner vuoti una volta che si riavvia il programma verranno cancellati.
+
+

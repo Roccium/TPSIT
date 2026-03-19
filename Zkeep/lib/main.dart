@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'am043 todo list',
+      title: 'Zkeep',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff0cc87f))),
       home: ChangeNotifierProvider<TodoListNotifier>(
         create: (notifier) => TodoListNotifier(),
-        child: const MyHomePage(title: 'am043 todo list'),
+        child: const MyHomePage(title: 'Zkeep'),
       ),
     );
   }

@@ -11,12 +11,11 @@ class Immagine {
 
 class Contenitore {
   Contenitore({
-    required this.id,
+    required this.livello,
     required this.argomento,
-    List<Todo>? todos,
-  }) : todos = todos ?? [];
-  final int id;
+    List<Immagine>? griglia,
+  }) : griglia = griglia ?? [];
+  final int livello;
   final String argomento;
-  final List<String> todos;
-  final List<L
+  List<Immagine> griglia;
 }

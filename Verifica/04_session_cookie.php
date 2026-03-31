@@ -1,7 +1,7 @@
 <?php
-// ════════════════════════════════════════
+
 // SESSION
-// ════════════════════════════════════════
+
 
 session_start(); // SEMPRE prima di qualsiasi output HTML
 
@@ -26,9 +26,9 @@ session_abort(); // annulla modifiche correnti
 // Debug
 print_r($_SESSION);
 
-// ════════════════════════════════════════
+
 // COOKIE
-// ════════════════════════════════════════
+
 
 // Impostare (scade dopo 30 giorni)
 setcookie("username", "admin", time() + (86400 * 30), "/");
@@ -46,9 +46,9 @@ if (count($_COOKIE) > 0)
 else
     echo "Cookie disabilitati";
 
-// ════════════════════════════════════════
+
 // LOGIN + LOGOUT — flusso completo
-// ════════════════════════════════════════
+
 
 session_start();
 

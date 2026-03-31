@@ -1,7 +1,7 @@
 <?php
-// ════════════════════════════════════════
+
 // LEGGERE $_GET / $_POST
-// ════════════════════════════════════════
+
 
 $valore = $_GET["chiave"];            // diretta
 $valore = @$_GET["chiave"];           // @ sopprime warning se mancante
@@ -13,9 +13,8 @@ if (!empty($_GET["chiave"]))          echo "non vuoto";
 if (isset($_GET["k"]) && !empty($_GET["k"])) echo "presente";
 
 ?>
-<!-- ════════════════════════════════════════ -->
+ 
 <!-- FORM BASE — method GET                   -->
-<!-- ════════════════════════════════════════ -->
 <form action="pagina.php" method="GET">
     <input type="text"   name="titolo"  value="<?= @$_GET['titolo'] ?>">
     <input type="number" name="prezzo"  value="<?= @$_GET['prezzo'] ?>">
@@ -24,14 +23,11 @@ if (isset($_GET["k"]) && !empty($_GET["k"])) echo "presente";
     <input type="submit" name="logout" value="Logout">
 </form>
 
-<!-- ════════════════════════════════════════ -->
 <!-- CAMPO HIDDEN — passa ID senza mostrarlo  -->
-<!-- ════════════════════════════════════════ -->
+ 
 <input type="hidden" name="id" value="<?= $_GET["id"] ?>">
 
-<!-- ════════════════════════════════════════ -->
 <!-- SELECT statico                           -->
-<!-- ════════════════════════════════════════ -->
 <select name="valuta">
     <option selected disabled>Scegli...</option>
     <option value="EUR">€</option>
@@ -39,9 +35,8 @@ if (isset($_GET["k"]) && !empty($_GET["k"])) echo "presente";
     <option value="GBP">£</option>
 </select>
 
-<!-- ════════════════════════════════════════ -->
 <!-- SELECT dinamico da DB                    -->
-<!-- ════════════════════════════════════════ -->
+
 <?php
 $result = mysqli_query($conn, "SELECT id, nome, cognome FROM autori");
 ?>
@@ -53,9 +48,7 @@ $result = mysqli_query($conn, "SELECT id, nome, cognome FROM autori");
     <?php } ?>
 </select>
 
-<!-- ════════════════════════════════════════ -->
 <!-- TABELLA con link Elimina / Modifica      -->
-<!-- ════════════════════════════════════════ -->
 <table>
     <thead>
         <tr><th>ID</th><th>Titolo</th><th>Prezzo</th><th>Azioni</th></tr>

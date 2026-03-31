@@ -1,7 +1,6 @@
 <?php
-// ════════════════════════════════════════
 // CONNESSIONE DB
-// ════════════════════════════════════════
+
 
 // Procedurale
 $conn = mysqli_connect("localhost", "root", "", "database");
@@ -14,9 +13,8 @@ $conn = mysqli_connect(
     database: "database"
 );
 
-// ────────────────────────────────────────
 // CONTROLLO ERRORE
-// ────────────────────────────────────────
+
 
 // Procedurale
 if (false === $conn)
@@ -26,15 +24,14 @@ if (false === $conn)
 if ($conn->connect_error)
     die("Connessione fallita: " . $conn->connect_error);
 
-// ────────────────────────────────────────
 // CHIUSURA
-// ────────────────────────────────────────
+
 
 mysqli_close($conn);
 $conn->close();
 
-// ────────────────────────────────────────
+
 // DEBUG
-// ────────────────────────────────────────
+
 
 echo mysqli_get_host_info($conn);

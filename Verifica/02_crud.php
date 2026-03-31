@@ -1,7 +1,7 @@
 <?php
-// ════════════════════════════════════════
+
 // SELECT
-// ════════════════════════════════════════
+
 
 $result = mysqli_query($conn, "SELECT * FROM tabella");
 
@@ -20,9 +20,9 @@ while ($row = $result->fetch_assoc()) {
 
 mysqli_free_result($result);
 
-// ────────────────────────────────────────
+
 // SELECT — WHERE
-// ────────────────────────────────────────
+
 
 $titolo = $_GET["titolo"];
 $result = mysqli_query($conn, "SELECT * FROM libri WHERE titolo = '$titolo'");
@@ -34,16 +34,16 @@ if ($result && mysqli_num_rows($result) > 0) {
     echo "Nessun risultato.";
 }
 
-// ────────────────────────────────────────
+
 // SELECT — ORDER BY
-// ────────────────────────────────────────
+
 
 $ordine = isset($_GET["ordine"]) ? $_GET["ordine"] : "ASC";
 $result = mysqli_query($conn, "SELECT * FROM tabella ORDER BY colonna $ordine");
 
-// ────────────────────────────────────────
+
 // SELECT — COUNT
-// ────────────────────────────────────────
+
 
 $result = mysqli_query($conn, "SELECT COUNT(*) AS totale FROM tabella");
 $row    = mysqli_fetch_assoc($result);
@@ -53,9 +53,9 @@ if ($row["totale"] == 0) {
     exit;
 }
 
-// ────────────────────────────────────────
+
 // SELECT — QUERY ANNIDATA (join manuale)
-// ────────────────────────────────────────
+
 
 while ($row = $result->fetch_assoc()) {
     $id_autore = $row["id_autori"];
@@ -63,9 +63,9 @@ while ($row = $result->fetch_assoc()) {
     echo $autore["nome"] . " " . $autore["cognome"];
 }
 
-// ════════════════════════════════════════
+
 // INSERT
-// ════════════════════════════════════════
+
 
 $titolo = @$_GET["titolo"];
 $prezzo = @$_GET["prezzo"];
@@ -82,9 +82,8 @@ if (isset($_GET["titolo"])) {
     }
 }
 
-// ════════════════════════════════════════
 // UPDATE
-// ════════════════════════════════════════
+
 
 if (isset($_GET["salva"])) {
     $id     = $_GET["id"];
@@ -101,9 +100,9 @@ if (isset($_GET["salva"])) {
     exit;
 }
 
-// ════════════════════════════════════════
+
 // DELETE
-// ════════════════════════════════════════
+
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];

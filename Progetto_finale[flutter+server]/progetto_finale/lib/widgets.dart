@@ -22,6 +22,7 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(image: FileImage(File('/path/to/file.jpg')));
+    return Row();
+    //return Image(image: FileImage(File('/path/to/file.jpg')));
   }
 }

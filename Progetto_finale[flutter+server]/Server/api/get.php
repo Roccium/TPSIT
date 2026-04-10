@@ -31,7 +31,9 @@ switch ($azione) {
 // ─── Funzioni ────────────────────────────────────────────────────────────────
 
 function registrazione($nom,$pass){
-
+    //decidere come strutturare utenti
+    $query = $mysqli->prepare("INSERT INTO utenti VALUES ( ?, ?); ;");
+    $query->bind_param('ss',$nom,$pass);
 }
 
 ?>

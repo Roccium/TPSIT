@@ -38,6 +38,7 @@ switch ($azione) {
         $statement = $mysqli->prepare("DELETE FROM utenti WHERE nome = ? AND password = ?;");
         $statement->bind_param('ss',$nomeUtente,$passwordUtente);
         $statement->execute();
+        return "200";
         //settagio cascade nel database
     }
     function deletefoto($codicefoto){

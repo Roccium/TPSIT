@@ -1,21 +1,31 @@
-import 'dart:core';
-import 'package:flutter/material.dart';
+class Capo {
+  final int? id;
+  final String categoria;
+  final String imagePath;
 
-class Immagine {
-  Immagine({required this.id,required this.link,required this.propieta, required  this.colori});
-  final int id;
-  final String link;
-  List<String> propieta;
-  final List<Colors> colori;
+  Capo({this.id, required this.categoria, required this.imagePath});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'categoria': categoria,
+      'imagePath': imagePath,
+    };
+  }
+
+  factory Capo.fromMap(Map<String, dynamic> map) {
+    
+    return Capo(
+      id: map['id'],
+      categoria: map['categoria'],
+      imagePath: map['imagePath'],
+    );
+  }
+  
 }
+class SezioneArmadio {
+  final String titolo;
+  final List<Capo> capi;
 
-class Contenitore {
-  Contenitore({
-    required this.livello,
-    required this.argomento,
-    List<Immagine>? griglia,
-  }) : griglia = griglia ?? [];
-  final int livello;
-  final String argomento;
-  List<Immagine> griglia;
+  SezioneArmadio({required this.titolo, required this.capi});
 }

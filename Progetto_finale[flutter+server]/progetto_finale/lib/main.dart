@@ -1,65 +1,32 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:progetto_finale/Camera.dart';
-import 'package:progetto_finale/notiefier.dart';
-import 'package:provider/provider.dart';
-import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
-//camera frontale, davanti,grandangolo...
-List<CameraDescription> cameras = [];
-Future<void> main() async {
+import 'notiefier.dart';
+import 'login_view.dart';
 
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  
+  runApp(
+    ProviderScope(
+      overrides: [
+        camerasProvider.overrideWith((ref) => cameras),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      home: ChangeNotifierProvider<ArmadioListNotifier>( 
-        create: (_) => ArmadioListNotifier(),            
-        child: const MyHomePage(),
-      ),
+      title: 'Armadio Online',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LoginView(), // Auth Wrapper Base
     );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-      Future<void> openCamera(BuildContext context) async {
-    final cameras = await availableCameras();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CameraScreen(cameras: cameras),
-      ),
-    );
-  }
-  @override
-  Widget build(BuildContext context) {
-    final notifier = context.watch<ArmadioListNotifier>(); 
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('App'),
-      ),
-      body: Center(
-        child: ElevatedButton.icon(
-          icon: const Icon(Icons.camera_alt),
-          label: const Text('Apri Camera'),
-          onPressed: () => openCamera(context), // ✅ passa context qui
-        ),
-      ),);
   }
 }

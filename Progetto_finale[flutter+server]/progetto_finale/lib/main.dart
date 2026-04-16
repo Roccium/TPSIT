@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'notiefier.dart';
 import 'login_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
+  
+  // Inizializziamo la variabile globale definita in notiefier.dart
+  globalCameras = await availableCameras();
   
   runApp(
-    ProviderScope(
-      overrides: [
-        camerasProvider.overrideWith((ref) => cameras),
-      ],
+    // Avvolgiamo l'app con ChangeNotifierProvider al posto di ProviderScope
+    ChangeNotifierProvider(
+      create: (context) => ArmadioNotifier()..caricaDati(), // Carica subito i dati
       child: const MyApp(),
     ),
   );
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Armadio Online',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginView(), // Auth Wrapper Base
+      home: LoginView(),
     );
   }
 }

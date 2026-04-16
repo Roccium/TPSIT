@@ -1,57 +1,72 @@
 import 'dart:io';
 import 'dart:async';
-import 'dart:isolate'; // AGGIUNTO: Fondamentale per non far laggare l'app
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:isolate'; 
+import 'package:flutter/widgets.dart'; // Sostituito riverpod con i widget base di Flutter
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
 import '../database_helper.dart'; 
 import '../models.dart';          
 
-// --- 1. PROVIDER DELLE FOTOCAMERE (Risolve l'errore nel main!) ---
-final camerasProvider = StateProvider<List<CameraDescription>>((ref) => []);
+// --- 1. VARIABILE GLOBALE FOTOCAMERE ---
+// Senza Riverpod, possiamo usare una semplice variabile globale per memorizzare le fotocamere all'avvio.
+List<CameraDescription> globalCameras = [];
 
-// --- 2. PROVIDER DELL'ARMADIO ---
-final armadioProvider = AsyncNotifierProvider<ArmadioNotifier, List<SezioneArmadio>>(
-  ArmadioNotifier.new,
-);
-
-class ArmadioNotifier extends AsyncNotifier<List<SezioneArmadio>> {
+// --- 2. NOTIFIER DELL'ARMADIO ---
+class ArmadioNotifier with ChangeNotifier {
   final _db = DatabaseHelper.istanza;
   final List<String> _categorieFisse = ['Maglie', 'Pantaloni', 'Scarpe'];
 
-  @override
-  FutureOr<List<SezioneArmadio>> build() async {
-    return _caricaERaggruppa();
-  }
+  // Stato interno
+  List<SezioneArmadio> _sezioni = [];
+  bool _isLoading = true;
 
-  Future<List<SezioneArmadio>> _caricaERaggruppa() async {
-    final tutti = await _db.getAllCapi();
-    
-    // Creiamo la mappa delle sezioni
-    Map<String, List<Capo>> mappa = { for (var c in _categorieFisse) c: [] };
+  // Getters per leggere lo stato dalla UI
+  List<SezioneArmadio> get sezioni => _sezioni;
+  bool get isLoading => _isLoading;
 
-    for (var capo in tutti) {
-      if (mappa.containsKey(capo.categoria)) {
-        mappa[capo.categoria]!.add(capo);
+  // Equivalente al "firstQuery" dell'esempio precedente
+  Future<void> caricaDati() async {
+    _isLoading = true;
+    notifyListeners(); // Avvisa la UI che stiamo caricando
+
+    try {
+      final tutti = await _db.getAllCapi();
+      
+      // Creiamo la mappa delle sezioni
+      Map<String, List<Capo>> mappa = { for (var c in _categorieFisse) c: [] };
+
+      for (var capo in tutti) {
+        if (mappa.containsKey(capo.categoria)) {
+          mappa[capo.categoria]!.add(capo);
+        }
       }
-    }
 
-    return mappa.entries.map((e) => SezioneArmadio(titolo: e.key, capi: e.value)).toList();
+      // Aggiorniamo la lista finale
+      _sezioni = mappa.entries.map((e) => SezioneArmadio(titolo: e.key, capi: e.value)).toList();
+      
+    } catch (e) {
+      print("Errore nel caricamento dati: $e");
+    } finally {
+      _isLoading = false;
+      notifyListeners(); // Avvisa la UI che abbiamo finito e i dati sono pronti
+    }
   }
 
   // --- AZIONI (CRUD) ---
 
-  // Azione scatto: aggiorna l'intero stato dell'armadio
+  // Azione scatto: aggiunge un capo e aggiorna lo stato
   Future<void> aggiungiCapo(CameraController controller, String categoria) async {
     if (!controller.value.isInitialized) return;
 
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
       final image = await controller.takePicture();
       final dir = await getApplicationDocumentsDirectory();
       final path = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
       
-      // AGGIUNTO: Isolate.run per spostare la foto in background senza laggare
+      // Isolate.run per spostare la foto in background senza laggare
       final savedPath = await Isolate.run(() async {
         final source = File(image.path);
         final destination = await source.copy(path);
@@ -62,16 +77,23 @@ class ArmadioNotifier extends AsyncNotifier<List<SezioneArmadio>> {
       // Salva nel database SQLite
       await _db.insertCapo(Capo(categoria: categoria, imagePath: savedPath));
       
-      return _caricaERaggruppa();
-    });
+      // Ricarica tutto dal DB per avere lo stato sincronizzato
+      await caricaDati(); 
+    } catch (e) {
+      print("Errore durante l'aggiunta del capo: $e");
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
-  // AGGIUNTO: Metodo per eliminare un capo (Database + File)
+  // Metodo per eliminare un capo (Database + File)
   Future<void> eliminaCapo(Capo capo) async {
     if (capo.id == null) return;
 
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
       // 1. Elimina dal Database
       await _db.deleteCapo(capo.id!);
       
@@ -79,7 +101,12 @@ class ArmadioNotifier extends AsyncNotifier<List<SezioneArmadio>> {
       final file = File(capo.imagePath);
       if (await file.exists()) await file.delete();
       
-      return _caricaERaggruppa();
-    });
+      // Ricarica la lista aggiornata
+      await caricaDati();
+    } catch (e) {
+      print("Errore durante l'eliminazione: $e");
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

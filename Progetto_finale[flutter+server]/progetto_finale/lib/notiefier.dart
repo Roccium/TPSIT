@@ -11,10 +11,9 @@ import '../models.dart';
 // Senza Riverpod, possiamo usare una semplice variabile globale per memorizzare le fotocamere all'avvio.
 List<CameraDescription> globalCameras = [];
 
-// --- 2. NOTIFIER DELL'ARMADIO ---
 class ArmadioNotifier with ChangeNotifier {
   final _db = DatabaseHelper.istanza;
-  final List<String> _categorieFisse = ['Maglie', 'Pantaloni', 'Scarpe'];
+  final List<String> _categorieFisse = ['Cappelli','Collane','Maglie','Cinture','Pantaloni','Scarpe'];
 
   // Stato interno
   List<SezioneArmadio> _sezioni = [];

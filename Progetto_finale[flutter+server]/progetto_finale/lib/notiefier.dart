@@ -1,37 +1,46 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:isolate'; 
-import 'package:flutter/widgets.dart'; // Sostituito riverpod con i widget base di Flutter
+import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
 import '../database_helper.dart'; 
 import '../models.dart';          
 
-// --- 1. VARIABILE GLOBALE FOTOCAMERE ---
-// Senza Riverpod, possiamo usare una semplice variabile globale per memorizzare le fotocamere all'avvio.
 List<CameraDescription> globalCameras = [];
 
 class ArmadioNotifier with ChangeNotifier {
   final _db = DatabaseHelper.istanza;
-  final List<String> _categorieFisse = ['Cappelli','Collane','Maglie','Cinture','Pantaloni','Scarpe'];
+  final List<String> _categorieFisse = [
+    'Cappelli', 'Collane', 'Maglie', 'Cinture', 'Pantaloni', 'Scarpe'
+  ];
 
-  // Stato interno
+  // --- NUOVO ---
+  int _sezioniVisibili = 3;
+
   List<SezioneArmadio> _sezioni = [];
   bool _isLoading = true;
 
-  // Getters per leggere lo stato dalla UI
+  // Getters esistenti
   List<SezioneArmadio> get sezioni => _sezioni;
   bool get isLoading => _isLoading;
 
-  // Equivalente al "firstQuery" dell'esempio precedente
+  // --- NUOVI GETTERS ---
+  List<SezioneArmadio> get sezioniVisibili =>
+      _sezioni.take(_sezioniVisibili).toList();
+
+  bool get haSezioniNascoste => _sezioniVisibili < _sezioni.length;
+
+  // ------------------------------------------------
+  // CARICA DATI — identico al tuo originale
+  // ------------------------------------------------
   Future<void> caricaDati() async {
     _isLoading = true;
-    notifyListeners(); // Avvisa la UI che stiamo caricando
+    notifyListeners();
 
     try {
       final tutti = await _db.getAllCapi();
       
-      // Creiamo la mappa delle sezioni
       Map<String, List<Capo>> mappa = { for (var c in _categorieFisse) c: [] };
 
       for (var capo in tutti) {
@@ -40,20 +49,36 @@ class ArmadioNotifier with ChangeNotifier {
         }
       }
 
-      // Aggiorniamo la lista finale
-      _sezioni = mappa.entries.map((e) => SezioneArmadio(titolo: e.key, capi: e.value)).toList();
+      _sezioni = mappa.entries
+          .map((e) => SezioneArmadio(titolo: e.key, capi: e.value))
+          .toList();
       
     } catch (e) {
       print("Errore nel caricamento dati: $e");
     } finally {
       _isLoading = false;
-      notifyListeners(); // Avvisa la UI che abbiamo finito e i dati sono pronti
+      notifyListeners();
     }
   }
-
-  // --- AZIONI (CRUD) ---
-
-  // Azione scatto: aggiunge un capo e aggiorna lo stato
+  void setCategoriaCover(String titoloSezione, String imagePath) {
+  // 1. Cerchiamo l'indice della sezione corretta
+  final index = _sezioni.indexWhere((s) => s.titolo == titoloSezione);
+  
+  if (index != -1) {
+    // 2. Aggiorniamo il percorso della copertina
+    _sezioni[index].coverPath = imagePath;
+    
+    // 3. Fondamentale: notifichiamo la UI del cambiamento
+    notifyListeners();
+    
+    // Nota: Per rendere questa scelta permanente al riavvio dell'app,
+    // in futuro dovrai salvare imagePath nel database o nelle SharedPreferences.
+    debugPrint("Copertina aggiornata per $titoloSezione: $imagePath");
+  }
+}
+  // ------------------------------------------------
+  // AGGIUNGI CAPO — identico al tuo originale
+  // ------------------------------------------------
   Future<void> aggiungiCapo(CameraController controller, String categoria) async {
     if (!controller.value.isInitialized) return;
 
@@ -65,18 +90,14 @@ class ArmadioNotifier with ChangeNotifier {
       final dir = await getApplicationDocumentsDirectory();
       final path = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
       
-      // Isolate.run per spostare la foto in background senza laggare
       final savedPath = await Isolate.run(() async {
         final source = File(image.path);
         final destination = await source.copy(path);
-        if (await source.exists()) await source.delete(); // Pulisce la cache
+        if (await source.exists()) await source.delete();
         return destination.path;
       });
 
-      // Salva nel database SQLite
       await _db.insertCapo(Capo(categoria: categoria, imagePath: savedPath));
-      
-      // Ricarica tutto dal DB per avere lo stato sincronizzato
       await caricaDati(); 
     } catch (e) {
       print("Errore durante l'aggiunta del capo: $e");
@@ -85,7 +106,9 @@ class ArmadioNotifier with ChangeNotifier {
     }
   }
 
-  // Metodo per eliminare un capo (Database + File)
+  // ------------------------------------------------
+  // ELIMINA CAPO — identico al tuo originale
+  // ------------------------------------------------
   Future<void> eliminaCapo(Capo capo) async {
     if (capo.id == null) return;
 
@@ -93,18 +116,25 @@ class ArmadioNotifier with ChangeNotifier {
     notifyListeners();
 
     try {
-      // 1. Elimina dal Database
       await _db.deleteCapo(capo.id!);
       
-      // 2. Elimina il file fisico per liberare memoria
       final file = File(capo.imagePath);
       if (await file.exists()) await file.delete();
       
-      // Ricarica la lista aggiornata
       await caricaDati();
     } catch (e) {
       print("Errore durante l'eliminazione: $e");
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // ------------------------------------------------
+  // NUOVO: rivela la prossima sezione nascosta
+  // ------------------------------------------------
+  void rivelaProssimaSezione() {
+    if (haSezioniNascoste) {
+      _sezioniVisibili++;
       notifyListeners();
     }
   }

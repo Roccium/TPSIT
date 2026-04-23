@@ -23,9 +23,15 @@ class Capo {
   }
   
 }
+
 class SezioneArmadio {
   final String titolo;
-  final List<Capo> capi;
+  List<Capo> capi; // Assicurati che il tipo coincida con quello del DB (Capo o CapoAbbigliamento)
+  String? coverPath; // <-- AGGIUNGI QUESTA RIGA
 
-  SezioneArmadio({required this.titolo, required this.capi});
+  SezioneArmadio({
+    required this.titolo,
+    required this.capi,
+    this.coverPath, // <-- AGGIUNGI AL COSTRUTTORE
+  });
 }

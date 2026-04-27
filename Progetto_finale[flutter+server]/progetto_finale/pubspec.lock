@@ -74,7 +74,7 @@ packages:
     source: hosted
     version: "1.0.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76"
@@ -163,6 +163,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  lindi_sticker_widget:
+    dependency: "direct main"
+    description:
+      name: lindi_sticker_widget
+      sha256: "17f0f0621c8276c07a3a8a422e9f44f29d4d02fd26a71f90b3448a9c46079ab0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   logging:
     dependency: transitive
     description:

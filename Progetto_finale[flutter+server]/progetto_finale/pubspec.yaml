@@ -13,7 +13,9 @@ dependencies:
   path_provider: ^2.1.2
   sqflite: ^2.3.0
   path: ^1.8.3
+  lindi_sticker_widget: ^1.1.0
   provider: ^6.1.2
+  collection: ^1.18.0
   # http: ^1.1.0 # Da decommentare quando collegherai il server
 
 flutter:

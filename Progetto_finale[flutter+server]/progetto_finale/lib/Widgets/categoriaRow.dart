@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:progetto_finale/camera.dart';
 import 'package:progetto_finale/costanti.dart';
 import 'package:progetto_finale/models.dart';
+import 'package:provider/provider.dart';
+
+import '../notiefier.dart';
 
 class CategoriaRow extends StatelessWidget {
   final SezioneArmadio sezione;
@@ -29,6 +32,9 @@ class CategoriaRow extends StatelessWidget {
           final bool isCover = sezione.coverPath == capo.imagePath;
 
           return GestureDetector(
+            onDoubleTap: () {
+              popUpElimina(context, capo);
+            },
             onTap: () {
               if (onSetCover != null) onSetCover!(capo.imagePath);
               Feedback.forLongPress(context);
@@ -55,7 +61,41 @@ class CategoriaRow extends StatelessWidget {
       ),
     );
   }
-
+  Future<dynamic> popUpElimina(context,Capo capo){
+    return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Conferma eliminazione'),
+                  content: const Text('Sei davvero sicuro di voler cancellare questo elemento?'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Chiude semplicemente il popup
+                      },
+                      child: const Text('Annulla', style: TextStyle(color: Colors.grey)),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () async {
+                        
+                        final notifier = Provider.of<ArmadioNotifier>(context,listen: false);
+                          await notifier.eliminaCapo(capo);
+                          Navigator.pop(context);
+                      },
+                      child: const Text('Sicuro di cancellare'),
+                    ),
+                  ],
+                );
+              },
+            );
+  }
   Widget _returnToTransparent(BuildContext context) {
     return GestureDetector(
       onTap: () => onSetCover?.call(""),

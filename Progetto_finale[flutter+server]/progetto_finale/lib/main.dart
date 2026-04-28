@@ -6,14 +6,11 @@ import 'login_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Inizializziamo la variabile globale definita in notiefier.dart
   globalCameras = await availableCameras();
   
   runApp(
-    // Avvolgiamo l'app con ChangeNotifierProvider al posto di ProviderScope
     ChangeNotifierProvider(
-      create: (context) => ArmadioNotifier()..caricaDati(), // Carica subito i dati
+      create: (context) => ArmadioNotifier()..caricaDati(),
       child: const MyApp(),
     ),
   );
@@ -21,11 +18,13 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Armadio Online',
+      //cambiare e mettere da costanti.dart
       theme: ThemeData(primarySwatch: Colors.blue),
       home: LoginView(),
     );

@@ -14,18 +14,19 @@ class ArmadioNotifier with ChangeNotifier {
   bool _isLoading = false;
 
   final List<String> _categorieFisse = [
-    'Cappelli', 'Collane', 'Maglie', 'Cinture', 'Pantaloni', 'Scarpe'
+    'Cappelli', 'Collane', 'Maglie', 'Cinture', 'Pantaloni', 'Scarpe','Felpa','Giacca'
   ];
   
   List<SezioneArmadio> _sezioni = [];
-  
   List<Map<String, dynamic>> _widgets = [
-    {'id': 'Cappelli',  'dx': 0.0, 'dy': 0.0,   'h': 100.0, 'w': 100.0},
-    {'id': 'Collane',   'dx': 0.0, 'dy': 100.0, 'h': 300.0, 'w': 200.0},
-    {'id': 'Maglie',    'dx': 0.0, 'dy': 200.0, 'h': 200.0, 'w': 300.0},
-    {'id': 'Cinture',   'dx': 0.0, 'dy': 300.0, 'h': 400.0, 'w': 100.0},
-    {'id': 'Pantaloni', 'dx': 0.0, 'dy': 400.0, 'h': 100.0, 'w': 100.0},
-    {'id': 'Scarpe',    'dx': 0.0, 'dy': 500.0, 'h': 100.0, 'w': 100.0},
+    {'id': 'Pantaloni', 'dx': 200.0-275/2, 'dy': 1000.0/3, 'h': 375.0, 'w': 275.0},
+    {'id': 'Giacca',    'dx': 200.0-350/2, 'dy': 1000.0/10, 'h': 350.0, 'w': 350.0},
+    {'id': 'Felpa',    'dx': 200.0-350/2, 'dy': 1000.0/10, 'h': 355.0, 'w': 355.0},
+    {'id': 'Maglie',    'dx': 200.0-350/2, 'dy': 1000.0/10, 'h': 360.0, 'w': 360.0},
+    {'id': 'Cinture',   'dx': 200.0-300/2, 'dy': 1000.0/2.5, 'h': 50.0, 'w': 300.0},
+    {'id': 'Scarpe',    'dx': 200.0-325/2, 'dy': 1000.0/1.5, 'h': 100.0, 'w': 325.0},
+    {'id': 'Cappelli',  'dx': 200.0-150/2, 'dy': 0.0,   'h': 100.0, 'w': 150.0},
+    {'id': 'Collane',   'dx': 200.0-200/2, 'dy': 1000.0/20, 'h': 275.0, 'w': 200.0},
   ];
 
   List<Map<String, dynamic>> get widgets => _widgets;

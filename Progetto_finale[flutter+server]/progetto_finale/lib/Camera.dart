@@ -64,8 +64,8 @@ class _CameraViewState extends State<CameraView> {
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Color.fromARGB(
-                                169, 0, 0, 0), // Colore del contorno
-                            width: 3.0, // Spessore del contorno
+                                169, 0, 0, 0), 
+                            width: 3.0,
                           ),
                         ),
                         child: const Icon(Icons.arrow_back),

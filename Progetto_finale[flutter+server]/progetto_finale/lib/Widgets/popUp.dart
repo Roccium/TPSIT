@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'categoriaRow.dart';
 import 'package:progetto_finale/costanti.dart';
 import 'package:progetto_finale/models.dart';
 import 'package:progetto_finale/notiefier.dart';
 import 'package:provider/provider.dart';
+
+import 'categoriaRow.dart';
 
 class PopupCategoria extends StatelessWidget {
   final SezioneArmadio sezione;

@@ -1,5 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/Server/db.php';
+include __DIR__ . '/../db.php';
 header('Content-Type: application/json');
 $messaggio = json_decode(file_get_contents("php://input"), true);
 
@@ -26,7 +26,7 @@ switch ($azione) {
 
     default:
         http_response_code(400);
-        echo json_encode(["error" => "Azione non riconosciuta"]);
+        echo json_encode(["error" => "Azione non riconosciuta del"]);
         break;
 }
 

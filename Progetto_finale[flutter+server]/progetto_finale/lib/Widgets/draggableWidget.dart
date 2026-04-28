@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 
 class DraggableRotatableWidget extends StatefulWidget {
   final Widget child;
-  final VoidCallback onTap;
   final double initialDx;
   final double initialDy;
-  final void Function(double dx, double dy) onPositionChanged; // 👈
-
+  final void Function(double dx, double dy) onPositionChanged; 
+  final void Function(TapDownDetails details) onTapDown;
   const DraggableRotatableWidget({
     super.key,
     required this.child,
-    required this.onTap,
-    required this.onPositionChanged, // 👈
+    required this.onPositionChanged, 
+    required this.onTapDown,
     this.initialDx = 0,
     this.initialDy = 0,
   });
@@ -44,7 +43,7 @@ class _DraggableRotatableWidgetState extends State<DraggableRotatableWidget> {
       left: _dx,
       top: _dy,
       child: GestureDetector(
-        onTap: widget.onTap,
+        onDoubleTapDown: widget.onTapDown,
         onScaleStart: (details) {
           _baseAngle = _angle;
           _baseScale = _scale;

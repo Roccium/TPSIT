@@ -21,8 +21,7 @@ class BodyZone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool hasImages = sezione.capi.isNotEmpty;
-    final String? coverPath =
-        sezione.coverPath ?? (hasImages ? sezione.capi.last.imagePath : null);
+    final String? coverPath = sezione.coverPath ?? (hasImages ? sezione.capi.last.imagePath : null);
 
     return GestureDetector(
       onLongPress: () => _apriPopupGalleria(context),
@@ -33,7 +32,7 @@ class BodyZone extends StatelessWidget {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: 0.2),
             width: 1.5,
           ),
           image: coverPath != null
@@ -47,7 +46,7 @@ class BodyZone extends StatelessWidget {
             ? Center(
                 child: Icon(
                   kCategoriaIcone[sezione.titolo] ?? Icons.add_a_photo,
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withValues(alpha: 0.3),
                   size: 28,
                 ),
               )

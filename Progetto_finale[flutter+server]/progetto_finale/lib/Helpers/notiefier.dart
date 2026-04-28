@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
 import 'database_helper.dart';
-import 'models.dart';
+import '../models.dart';
 
 List<CameraDescription> globalCameras = [];
 
 class ArmadioNotifier with ChangeNotifier {
   final _db = DatabaseHelper.istanza;
   bool _isLoading = false;
-
+  String nomeutente = "";
   final List<String> _categorieFisse = [
     'Cappelli', 'Collane', 'Maglie', 'Cinture', 'Pantaloni', 'Scarpe','Felpa','Giacca'
   ];
@@ -32,6 +32,7 @@ class ArmadioNotifier with ChangeNotifier {
   List<Map<String, dynamic>> get widgets => _widgets;
   List<SezioneArmadio> get sezioni => _sezioni;
   bool get isLoading => _isLoading;
+  
 
   // aggiorna posizione senza rebuild
   void updateWidgetPosition(String id, double dx, double dy) {
@@ -115,7 +116,10 @@ class ArmadioNotifier with ChangeNotifier {
       notifyListeners();
     }
   }
-
+  void _setnome(String val) {
+    nomeutente = val;
+    notifyListeners();
+  }
   void _setLoading(bool val) {
     _isLoading = val;
     notifyListeners();

@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'notiefier.dart';
+import 'Helpers/notiefier.dart';
 
 class CameraView extends StatefulWidget {
   final String categoria;
@@ -77,28 +77,26 @@ class _CameraViewState extends State<CameraView> {
                       child: FloatingActionButton(
                         elevation: 10,
                         onPressed: () async {
-                          // Chiamiamo il metodo del notifier usando Provider
                           final notifier = Provider.of<ArmadioNotifier>(context,
                               listen: false);
-                          await notifier.aggiungiCapo(
-                              _controller!, widget.categoria);
+                          await notifier.aggiungiCapo(_controller!, widget.categoria);
                           if (mounted) Navigator.pop(context);
                         },
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Color.fromARGB(
-                                169, 0, 0, 0), // Colore del contorno
+                                169, 0, 0, 0), 
                             width: 3.0, // Spessore del contorno
                           ),
                         ),
                       ),
                     ),
+                    //widget x tenerli belli
                     Visibility(
                       visible: false,
                       maintainSize: true,
                       maintainAnimation: true,
                       maintainState: true,
-                      // Copia il widget del primo o secondo oggetto per avere le stesse dimensioni
                       child: Container(
                           width: 50, height: 1, color: Colors.transparent),
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
-import 'notiefier.dart';
+import 'Helpers/notiefier.dart';
 import 'login_view.dart';
 
 Future<void> main() async {

@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:progetto_finale/Widgets/draggableWidget.dart';
 import 'package:progetto_finale/Widgets/bodyZone.dart';
-import '../notiefier.dart';
+import 'Helpers/notiefier.dart';
 import 'costanti.dart';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HOME VIEW
-// ─────────────────────────────────────────────────────────────────────────────
-
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
-
+  final String nomeutente;
+  const HomeView({super.key,required this.nomeutente});
+  
   @override
   Widget build(BuildContext context) {
     final armadio = context.watch<ArmadioNotifier>();
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Armadio di inserirenome',
-          style: TextStyle(
+        title: Text(
+          'Armadio di $nomeutente',
+          style: const TextStyle(
             color: appDarkColor, 
             fontWeight: FontWeight.bold,
           ),

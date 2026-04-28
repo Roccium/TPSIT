@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 import '../models.dart';
 
 class DatabaseHelper {
-  // Singleton Pattern corretto
   static final DatabaseHelper istanza = DatabaseHelper._internal();
   factory DatabaseHelper() => istanza;
   DatabaseHelper._internal();
@@ -34,8 +33,6 @@ class DatabaseHelper {
       },
     );
   }
-
-  // --- METODI CRUD ---
 
   Future<int> insertCapo(Capo capo) async {
     final db = await database;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progetto_finale/costanti.dart';
 import 'package:progetto_finale/models.dart';
-import 'package:progetto_finale/notiefier.dart';
+import 'package:progetto_finale/Helpers/notiefier.dart';
 import 'package:provider/provider.dart';
 
 import 'categoriaRow.dart';

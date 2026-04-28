@@ -7,7 +7,7 @@ import 'package:progetto_finale/costanti.dart';
 import 'package:progetto_finale/models.dart';
 import 'package:provider/provider.dart';
 
-import '../notiefier.dart';
+import '../Helpers/notiefier.dart';
 
 class CategoriaRow extends StatelessWidget {
   final SezioneArmadio sezione;

@@ -12,13 +12,11 @@ import '../models.dart';
 List<CameraDescription> globalCameras = [];
 
 class ArmadioNotifier with ChangeNotifier {
-  DatabaseHelper? _db; // Non è più finale, cambia al login
-  
-  // Metodo da chiamare quando il login ha successo
+  DatabaseHelper? _db; 
   void impostaUtente(String nome) {
     nomeutente = nome;
-    _db = DatabaseHelper(nome); // Crea il database per questo utente
-    caricaDati(); // Carica i capi di QUESTO utente
+    _db = DatabaseHelper(nome);
+    caricaDati(); 
   }
   bool _isLoading = false;
   String nomeutente = "";
@@ -43,7 +41,6 @@ class ArmadioNotifier with ChangeNotifier {
   bool get isLoading => _isLoading;
   
 
-  // aggiorna posizione senza rebuild
   void updateWidgetPosition(String id, double dx, double dy) {
     final index = _widgets.indexWhere((w) => w['id'] == id);
     if (index == -1) return;

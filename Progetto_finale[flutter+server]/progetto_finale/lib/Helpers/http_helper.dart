@@ -54,7 +54,6 @@ class HttpHelper {
     }
   }
   Future<String> rimuoviSfondo(String imagePath) async {
-  // leggi il file e convertilo in base64
   final bytes = await File(imagePath).readAsBytes();
   final base64Image = base64Encode(bytes);
 

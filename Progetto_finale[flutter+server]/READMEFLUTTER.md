@@ -1,37 +1,54 @@
 # Consegna Finale: Armadio Digitale
-**Sviluppatore:** [Il Tuo Nome]  
-**Corso:** [Nome del Corso/Materia]  
-**Data di Consegna:** [Inserisci Data]
+**Rocco**     
+**Progetto finale TPSIT** 
 
 ---
 
-## Abstract
-Il progetto consiste in un'applicazione mobile sviluppata in **Flutter** che permette agli utenti di digitalizzare il proprio guardaroba. L'app offre funzionalità di autenticazione (multi-utenza), acquisizione di foto tramite fotocamera, rimozione automatica dello sfondo tramite un servizio API dedicato e organizzazione dei capi in categorie personalizzabili. L'obiettivo è fornire uno strumento intuitivo per visualizzare e comporre outfit partendo da una base dati locale persistente.
-
+## Consegna finale
+Il progetto è un applicazione mobile(progettata per android) in **Flutter** che crea un 'armadio virtuale' dove le persone possono provare combinazione dei loro vestiti per trovare nuove possibili abbinazioni.
+L'app offre la multi-utenza, scatto di foto tramite CameraX, rimozione dello sfondo con una chiamata API a un servizio e l'organizzazione dei capi in categorie specializzate.
+L'obiettivo è fornire uno strumento intuitivo per visualizzare e comporre outfit partendo da una base dati locale persistente.
 ---
+## Scelte e Motivazioni
 
-## Scelte Progettuali e Motivazioni
-
-### 1. Architettura State Management (Provider)
-È stato scelto il package **Provider** per la gestione dello stato globale (file `notiefier.dart`). Questa scelta è motivata dalla necessità di mantenere sincronizzata l'interfaccia utente (Home, Pop-up, Galleria) con i dati del database in modo reattivo, garantendo al contempo una netta separazione tra logica di business e UI.
-
-### 2. Persistenza Dati e Multi-utenza Locale
+### 1. (Notiefier)
+È stato scelto il un **Notiefier** personalizzato per avere un controllo estremo e personallizato dell applicativo per coprire tutti i vari casi limite senza sprecare troppo tempo a cercare il notiefier perfetto per il mio caso d'utenza.
+```
+  List<Map<String, dynamic>> get widgets => _widgets;
+  List<SezioneArmadio> get sezioni => _sezioni;
+  bool get isLoading => _isLoading;
+```
+### 2. Persistenza Dati e Multi-utenza
 Per la gestione dei dati è stato utilizzato **SQLite** tramite il plugin `sqflite`.
 - **Scelta:** Ogni utente loggato dispone di un file di database fisico dedicato (es. `armadio_nomeutente.db`).
-- **Motivazione:** Questa architettura garantisce la massima privacy locale e semplicità nella gestione dei dati: eliminando un utente, si elimina semplicemente il suo file dedicato senza dover gestire complesse query di filtraggio su un unico database massivo.
+- **Motivazione:** Questa scleta garantisce la privacy locale e semplicità nella gestione dei dati: eliminando un utente, l'ho usato per una motivazione di tempistiche e di complessita per la deadline alle porte
 
 ### 3. Pattern Singleton e Factory
 Nel file `database_helper.dart` è stato implementato il pattern **Singleton** combinato con un **Factory Constructor**.
-- **Motivazione:** Questo previene l'apertura multipla di connessioni allo stesso file di database, che causerebbe crash o corruzione dei dati. La factory gestisce dinamicamente la "mappa" delle istanze in base all'utente loggato.
+- **Motivazione:** Questo previene l'apertura multipla di connessioni allo stesso file di database, che causerebbe crash o corruzione dei dati. La factory gestisce dinamicamente la istanze in base all'utente loggato.
+```
+  static final Map<String, DatabaseHelper> _stanze = {};
 
+  final String nomeUtente;
+  Database? _database;
+
+  // Il factory constructor ora cerca nella mappa prima di creare
+  factory DatabaseHelper(String nomeUtente) {
+    if (_stanze.containsKey(nomeUtente)) {
+      return _stanze[nomeUtente]!;
+    } else {
+      final nuovaIstanza = DatabaseHelper._internal(nomeUtente);
+      _stanze[nomeUtente] = nuovaIstanza;
+      return nuovaIstanza;
+    }
+  }
+```
 ### 4. Elaborazione Immagini (Rimozione Sfondo)
-L'app integra una chiamata HTTP (file `http_helper.dart`) a un backend PHP che funge da bridge verso servizi di computer vision.
-- **Motivazione:** L'elaborazione neurale per la rimozione dello sfondo è troppo onerosa per essere eseguita in locale su dispositivi di fascia media; delegare il compito a un server permette di mantenere l'app fluida e leggera.
+L'app integra una chiamata HTTP (file `http_helper.dart`) a un backend PHP che funge da ponte verso servizi di computer vision.
+- **Motivazione:** decentralizzazione del lavoro svolto e per evitare di esporre le API key nell applicativo
 
 ---
-```
-// code goes here
-```
+
 ## Diario di Progetto (Step di Avanzamento)
 
 *Questa sezione documenta l'evoluzione del software in corrispondenza dei commit principali.*
@@ -46,16 +63,15 @@ L'app integra una chiamata HTTP (file `http_helper.dart`) a un backend PHP che f
 ---
 
 ## Pulizia del Codice
-Il codice segue le linee guida ufficiali di Dart ("Effective Dart"):
-- Utilizzo di **Null Safety** per prevenire errori a runtime.
-- Suddivisione del progetto in cartelle logiche: `Widgets`, `Helpers`, `Models`.
-- Utilizzo di costanti centralizzate (`costanti.dart`) per mantenere coerenza cromatica e stilistica.
+- Suddivisione del progetto in cartelle : `Widgets`, `Helpers`, `Models`.
+- Utilizzo di costanti centralizzate (`costanti.dart`) per mantenere la scelta stilistica.
 
 ---
 
 ## Fonti Utilizzate
 1. **Documentazione Ufficiale Flutter:** [flutter.dev/docs](https://flutter.dev/docs)
 2. **Sqflite Guide:** Gestione dei database locali in SQLite.
-3. **Provider Pattern:** Best practices per lo State Management.
+3. **Reddit** Risoluzione a problemi comuni tra gli sviluppatori.
 4. **Camera Plugin:** Documentazione per l'acquisizione di flussi video e scatto foto.
 5. **StackOverflow/Dart Pad:** Risoluzione di problematiche specifiche su Factory Constructors e Null Assertion.
+6. **API** https://www.remove.bg/api#sample-code

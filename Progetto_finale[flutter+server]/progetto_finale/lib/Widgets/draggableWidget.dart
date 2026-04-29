@@ -20,7 +20,7 @@ class DraggableRotatableWidget extends StatefulWidget {
   State<DraggableRotatableWidget> createState() => _DraggableRotatableWidgetState();
 }
 class _DraggableRotatableWidgetState extends State<DraggableRotatableWidget> {
-  late double _dx; // 👈 torna nello State per il rendering
+  late double _dx;
   late double _dy;
   double _angle = 0;
   double _baseAngle = 0;
@@ -33,13 +33,13 @@ class _DraggableRotatableWidgetState extends State<DraggableRotatableWidget> {
   @override
   void initState() {
     super.initState();
-    _dx = widget.initialDx; // 👈 inizializza dal notifier
+    _dx = widget.initialDx; 
     _dy = widget.initialDy;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(       // 👈 torna dentro il widget
+    return Positioned(       
       left: _dx,
       top: _dy,
       child: GestureDetector(
@@ -59,7 +59,7 @@ class _DraggableRotatableWidgetState extends State<DraggableRotatableWidget> {
             } else {
               _dx = _baseDx + details.focalPoint.dx - _baseFocal.dx;
               _dy = _baseDy + details.focalPoint.dy - _baseFocal.dy;
-              widget.onPositionChanged(_dx, _dy); // 👈 aggiorna notifier silenziosamente
+              widget.onPositionChanged(_dx, _dy); 
             }
           });
         },

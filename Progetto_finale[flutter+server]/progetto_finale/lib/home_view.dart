@@ -66,7 +66,7 @@ class HomeView extends StatelessWidget {
   }
 }
 void _showOrderMenu(BuildContext context, TapDownDetails details, String id, ArmadioNotifier armadio) async {
-  final position = details.globalPosition; // 👈 coordinate esatte del tocco
+  final position = details.globalPosition; 
 
   final result = await showMenu<String>(
     context: context,

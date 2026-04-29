@@ -74,7 +74,7 @@ class CategoriaRow extends StatelessWidget {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // Chiude semplicemente il popup
+                        Navigator.of(context).pop(); 
                       },
                       child: const Text('Annulla', style: TextStyle(color: Colors.grey)),
                     ),

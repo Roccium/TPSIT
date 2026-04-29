@@ -1,16 +1,11 @@
-// lib/database/database_helper.dart
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models.dart';
 
 class DatabaseHelper {
-  // Mappa statica che tiene traccia dei database aperti per ogni utente
   static final Map<String, DatabaseHelper> _stanze = {};
-
   final String nomeUtente;
   Database? _database;
-
-  // Il factory constructor ora cerca nella mappa prima di creare
   factory DatabaseHelper(String nomeUtente) {
     if (_stanze.containsKey(nomeUtente)) {
       return _stanze[nomeUtente]!;
@@ -30,7 +25,6 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    // Il nome del file diventa dinamico: "armadio_Marco.db"
     String path = join(await getDatabasesPath(), 'armadio_$nomeUtente.db');
     
     return await openDatabase(

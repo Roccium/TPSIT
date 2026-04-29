@@ -86,7 +86,7 @@ class _CameraViewState extends State<CameraView> {
                           side: BorderSide(
                             color: Color.fromARGB(
                                 169, 0, 0, 0), 
-                            width: 3.0, // Spessore del contorno
+                            width: 3.0,
                           ),
                         ),
                       ),

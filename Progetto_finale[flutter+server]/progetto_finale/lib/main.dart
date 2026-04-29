@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Armadio Online',
-      //cambiare e mettere da costanti.dart
       theme: ThemeData(primarySwatch: Colors.blue),
       home: LoginView(),
     );

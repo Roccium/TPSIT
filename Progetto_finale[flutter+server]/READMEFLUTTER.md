@@ -29,7 +29,9 @@ L'app integra una chiamata HTTP (file `http_helper.dart`) a un backend PHP che f
 - **Motivazione:** L'elaborazione neurale per la rimozione dello sfondo è troppo onerosa per essere eseguita in locale su dispositivi di fascia media; delegare il compito a un server permette di mantenere l'app fluida e leggera.
 
 ---
-
+```
+// code goes here
+```
 ## Diario di Progetto (Step di Avanzamento)
 
 *Questa sezione documenta l'evoluzione del software in corrispondenza dei commit principali.*

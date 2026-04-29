@@ -53,13 +53,14 @@ L'app integra una chiamata HTTP (file `http_helper.dart`) a un backend PHP che f
 
 *Questa sezione documenta l'evoluzione del software in corrispondenza dei commit principali.*
 
-- **Step 1:** [Data] - Configurazione ambiente, definizione dei modelli dati (`Capo`, `SezioneArmadio`) e costanti grafiche.
-- **Step 2:** [Data] - Implementazione del sistema di autenticazione e collegamento con `HttpHelper`.
-- **Step 3:** [Data] - Sviluppo della logica di persistenza locale con `DatabaseHelper` e supporto multi-utente.
-- **Step 4:** [Data] - Integrazione modulo `Camera.dart` e gestione del caricamento immagini con rimozione dello sfondo.
-- **Step 5:** [Data] - Creazione dell'interfaccia di visualizzazione dinamica (`HomeView`, `BodyZone`) e gestione del drag & drop.
-- **Step 6:** [Data] - Rifinitura UI, gestione dei profili e ottimizzazione della Null Safety.
-
+-  [29/4/2026] - Tocchi finali e connessione finale tra server e applicativo, controllo che funzioni la rimozione degli sfondi
+-  [28/4/2026] - Connesso il server e l'applicativo per quanto riguarda gli accessi e le password quasi finito il server
+-  [27/4/2026] - Fatto la logica interna e draggableWidget per ingrandire, spostare e modificare i capi
+-  [23/4/2026] - Cambiato completamente rotta del progetto deciso che la strada dei pacchetti non ne valeva la pena, faccio tutto in locale
+-  [21/4/2026] -Finito la home
+-  [16/4/2026] - Migliorie UI e finito la fotocamera
+-  [15/4/2027] - UI
+-  [12/4/2026] - Iniziato a sviluppare la fotocamera con CameraX, iniziato a lavorare al server, iniaziato a fare la homeview, iniziato a fare il notiefier, iniziato a fare il databasehelper
 ---
 
 ## Pulizia del Codice

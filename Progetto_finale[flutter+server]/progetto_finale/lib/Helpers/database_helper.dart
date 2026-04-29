@@ -4,13 +4,25 @@ import 'package:path/path.dart';
 import '../models.dart';
 
 class DatabaseHelper {
-  static final DatabaseHelper istanza = DatabaseHelper._internal();
-  factory DatabaseHelper() => istanza;
-  DatabaseHelper._internal();
+  // Mappa statica che tiene traccia dei database aperti per ogni utente
+  static final Map<String, DatabaseHelper> _stanze = {};
 
-  static Database? _database;
+  final String nomeUtente;
+  Database? _database;
 
-  // Getter asincrono con gestione del null
+  // Il factory constructor ora cerca nella mappa prima di creare
+  factory DatabaseHelper(String nomeUtente) {
+    if (_stanze.containsKey(nomeUtente)) {
+      return _stanze[nomeUtente]!;
+    } else {
+      final nuovaIstanza = DatabaseHelper._internal(nomeUtente);
+      _stanze[nomeUtente] = nuovaIstanza;
+      return nuovaIstanza;
+    }
+  }
+
+  DatabaseHelper._internal(this.nomeUtente);
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDatabase();
@@ -18,7 +30,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'armadio_v2.db');
+    // Il nome del file diventa dinamico: "armadio_Marco.db"
+    String path = join(await getDatabasesPath(), 'armadio_$nomeUtente.db');
+    
     return await openDatabase(
       path,
       version: 1,
@@ -42,11 +56,10 @@ class DatabaseHelper {
   Future<List<Capo>> getAllCapi() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('capi');
-    // Generiamo la lista assicurandoci che non ci siano errori di mappatura
     return List.generate(maps.length, (i) => Capo.fromMap(maps[i]));
   }
 
-  // Metodo mancante segnalato
+
   Future<int> deleteCapo(int id) async {
     final db = await database;
     return await db.delete(
@@ -55,8 +68,7 @@ class DatabaseHelper {
       whereArgs: [id],
     );
   }
-
-  // Metodo update (utile per la specifica PATCH/PUT del progetto)
+//manco lo uso questo
   Future<int> updateCapo(Capo capo) async {
     if (capo.id == null) return 0;
     final db = await database;

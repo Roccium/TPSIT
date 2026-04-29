@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progetto_finale/Widgets/dropDown.dart';
 import 'package:provider/provider.dart';
 import 'package:progetto_finale/Widgets/draggableWidget.dart';
 import 'package:progetto_finale/Widgets/bodyZone.dart';
@@ -19,6 +20,13 @@ class HomeView extends StatelessWidget {
           style: const TextStyle(
             color: appDarkColor, 
             fontWeight: FontWeight.bold,
+          ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(30.0),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: DropdownMenuprofili(nomeProfilo: "$nomeutente"),
           ),
         ),
         backgroundColor: Colors.white,

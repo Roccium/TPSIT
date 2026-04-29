@@ -1,16 +1,25 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
-import 'dart:isolate';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
+import 'package:progetto_finale/Helpers/http_helper.dart';
 import 'database_helper.dart';
 import '../models.dart';
 
 List<CameraDescription> globalCameras = [];
 
 class ArmadioNotifier with ChangeNotifier {
-  final _db = DatabaseHelper.istanza;
+  DatabaseHelper? _db; // Non è più finale, cambia al login
+  
+  // Metodo da chiamare quando il login ha successo
+  void impostaUtente(String nome) {
+    nomeutente = nome;
+    _db = DatabaseHelper(nome); // Crea il database per questo utente
+    caricaDati(); // Carica i capi di QUESTO utente
+  }
   bool _isLoading = false;
   String nomeutente = "";
   final List<String> _categorieFisse = [
@@ -61,9 +70,10 @@ class ArmadioNotifier with ChangeNotifier {
   }
 
   Future<void> caricaDati() async {
+    if (_db == null) return;
     _setLoading(true);
     try {
-      final tutti = await _db.getAllCapi();
+      final tutti = await _db!.getAllCapi(); 
       Map<String, List<Capo>> mappa = {for (var c in _categorieFisse) c: []};
 
       for (var capo in tutti) {
@@ -71,13 +81,12 @@ class ArmadioNotifier with ChangeNotifier {
           mappa[capo.categoria]!.add(capo);
         }
       }
-
       _sezioni = mappa.entries
           .map((e) => SezioneArmadio(titolo: e.key, capi: e.value))
           .toList();
-    } catch (e) {
+    }catch (e) {
       debugPrint("Load Error: $e");
-    } finally {
+    }  finally {
       _setLoading(false);
     }
   }
@@ -87,8 +96,10 @@ class ArmadioNotifier with ChangeNotifier {
     _setLoading(true);
     try {
       final image = await controller.takePicture();
-      final savedPath = await _saveImageLocally(image);
-      await _db.insertCapo(Capo(categoria: categoria, imagePath: savedPath));
+      final base64Risultato = await HttpHelper().rimuoviSfondo(image.path);
+      final bytes = base64Decode(base64Risultato);
+      final savedPath = await saveImageLocallyFromBytes(bytes);
+      await _db!.insertCapo(Capo(categoria: categoria, imagePath: savedPath));
       await caricaDati();
     } catch (e) {
       debugPrint("Add Error: $e");
@@ -100,7 +111,7 @@ class ArmadioNotifier with ChangeNotifier {
     if (capo.id == null) return;
     _setLoading(true);
     try {
-      await _db.deleteCapo(capo.id!);
+      await _db!.deleteCapo(capo.id!);
       final file = File(capo.imagePath);
       if (await file.exists()) await file.delete();
       await caricaDati();
@@ -116,25 +127,17 @@ class ArmadioNotifier with ChangeNotifier {
       notifyListeners();
     }
   }
-  void _setnome(String val) {
-    nomeutente = val;
-    notifyListeners();
-  }
   void _setLoading(bool val) {
     _isLoading = val;
     notifyListeners();
   }
 
-  Future<String> _saveImageLocally(XFile image) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final path = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-    return await Isolate.run(() async {
-      final source = File(image.path);
-      final dest = await source.copy(path);
-      if (await source.exists()) await source.delete();
-      return dest.path;
-    });
-  }
-
+  Future<String> saveImageLocallyFromBytes(Uint8List bytes) async {
+  final dir = await getApplicationDocumentsDirectory();
+  final path = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.png';
+  final file = File(path);
+  await file.writeAsBytes(bytes);
+  return file.path;
+}
   
 }
